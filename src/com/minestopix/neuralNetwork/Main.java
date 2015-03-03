@@ -9,39 +9,54 @@ import java.util.List;
  */
 public class Main {
 
-    public static List<OutputNeutron> outputNeutronList = new ArrayList<OutputNeutron>();
+    public static List<OutputNeuron> outputNeutronList = new ArrayList<OutputNeuron>();
 
     public static void main(String[] args) {
 
-        List<Neutron> outputNeutrons = new ArrayList<>();
+        List<Neuron> outputNeurons = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            outputNeutrons.add(new OutputNeutron());
+            outputNeurons.add(new OutputNeuron());
         }
 
 
-        List<Neutron> hiddenNeutrons = new ArrayList<>();
+        List<Neuron> hiddenNeurons = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            hiddenNeutrons.add(new HiddenNeutron(outputNeutrons));
+            hiddenNeurons.add(new HiddenNeuron(outputNeurons));
+        }
+
+        List<Neuron> hiddenNeutrons1 = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            hiddenNeutrons1.add(new HiddenNeuron(hiddenNeurons));
+        }
+
+        List<Neuron> hiddenNeutrons2 = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            hiddenNeutrons2.add(new HiddenNeuron(hiddenNeutrons1));
+        }
+
+        List<Neuron> hiddenNeutrons3 = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            hiddenNeutrons3.add(new HiddenNeuron(hiddenNeutrons1));
         }
 
 
-        HiddenNeutron inputNeutron1 = new HiddenNeutron(hiddenNeutrons, 0);
-        HiddenNeutron inputNeutron2 = new HiddenNeutron(hiddenNeutrons, 0);
-        HiddenNeutron inputNeutron3 = new HiddenNeutron(hiddenNeutrons, 0);
+        HiddenNeuron inputNeutron1 = new HiddenNeuron(hiddenNeutrons2, 0);
+        HiddenNeuron inputNeutron2 = new HiddenNeuron(hiddenNeutrons2, 0);
+        HiddenNeuron inputNeutron3 = new HiddenNeuron(hiddenNeutrons2, 0);
 
 
 
 
         BitSet input;
         BitSet output = new BitSet(3);
-        int desOut = 3;
+        int desOut = 7;
         input = BitSet.valueOf(new long[]{desOut});
         BitSet desired = BitSet.valueOf(new long[]{desOut});
 
 
         for (int i = 0; i < 3; i++) {
 
-            output.set(i, outputNeutronList.contains(outputNeutrons.get(i)));
+            output.set(i, outputNeutronList.contains(outputNeurons.get(i)));
 
         }
 
@@ -53,10 +68,20 @@ public class Main {
         if (input.get(2))
             inputNeutron3.activate();
 
-        for (Neutron n : hiddenNeutrons) {
+
+        for (Neuron n : hiddenNeurons) {
             n.activate();
         }
-        for (Neutron n : outputNeutrons) {
+        for (Neuron n : hiddenNeutrons1) {
+            n.activate();
+        }
+        for (Neuron n : hiddenNeutrons2) {
+            n.activate();
+        }
+        for (Neuron n : hiddenNeutrons3) {
+            n.activate();
+        }
+        for (Neuron n : outputNeurons) {
             n.activate();
         }
 
@@ -66,10 +91,10 @@ public class Main {
 
             for (int i = 0; i < 3; i++) {
                 if (!output.get(i) && desired.get(i)) {
-                    outputNeutrons.get(i).increaseStrength(null, 0.1f);
+                    outputNeurons.get(i).increaseStrength(null, 0.1f);
                 }
                 else if (output.get(i) && !desired.get(i)) {
-                    outputNeutrons.get(i).increaseStrength(null, -0.1f);
+                    outputNeurons.get(i).increaseStrength(null, -0.1f);
                 }
             }
 //            outputNeutrons.get(0).increaseStrength(null, -0.1f);
@@ -96,16 +121,25 @@ public class Main {
                 inputNeutron3.activate();
             }
 
-            for (Neutron n : hiddenNeutrons) {
+            for (Neuron n : hiddenNeurons) {
                 n.activate();
             }
-            for (Neutron n : outputNeutrons) {
+            for (Neuron n : hiddenNeutrons1) {
+                n.activate();
+            }
+            for (Neuron n : hiddenNeutrons2) {
+                n.activate();
+            }
+            for (Neuron n : hiddenNeutrons3) {
+                n.activate();
+            }
+            for (Neuron n : outputNeurons) {
                 n.activate();
             }
 
             for (int i = 0; i < 3; i++) {
 
-                output.set(i, outputNeutronList.contains(outputNeutrons.get(i)));
+                output.set(i, outputNeutronList.contains(outputNeurons.get(i)));
 
             }
             int value = 0;
@@ -115,7 +149,7 @@ public class Main {
 //            System.out.println(value);
             iters++;
             if ((output.equals(desired))) {
-                if(iters > 10000){
+                if(iters > 1){
                     System.out.println(iters + " iterations");
                 }
                 iters = 0;

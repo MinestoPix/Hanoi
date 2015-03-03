@@ -2,40 +2,41 @@ package com.minestopix.neuralNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by MinestoPix on 3/3/2015.
  */
-public class HiddenNeutron extends Neutron {
+public class HiddenNeuron extends Neuron {
 
     public static int idCount = 0;
     private final int id;
-    List<Neutron> from = new ArrayList<Neutron>();
-    List<Neutron> to;
+    List<Neuron> from = new ArrayList<Neuron>();
+    List<Neuron> to;
     float[] signalStr;
     float potential = 0;
     float potentialLimit;
     boolean activated = false;
 
-    public HiddenNeutron(List<Neutron> to, float potentialLimit, float defStr) {
+    public HiddenNeuron(List<Neuron> to, float potentialLimit, float defStr) {
 
         this.to = to;
         signalStr = new float[to.size()];
         for (int i = 0; i < signalStr.length; i++) {
-            signalStr[i] = defStr;
+            signalStr[i] = new Random().nextInt(10);
         }
         this.potentialLimit = potentialLimit;
         id = idCount++;
 
     }
 
-    public HiddenNeutron(List<Neutron> to, float potentialLimit) {
+    public HiddenNeuron(List<Neuron> to, float potentialLimit) {
 
-        this(to, potentialLimit, 0.5f);
+        this(to, potentialLimit, 1f);
 
     }
 
-    public HiddenNeutron(List<Neutron> to) {
+    public HiddenNeuron(List<Neuron> to) {
 
         this(to, 1);
 
@@ -53,7 +54,7 @@ public class HiddenNeutron extends Neutron {
     }
 
     @Override
-    public void increasePotential(Neutron from, float potential) {
+    public void increasePotential(Neuron from, float potential) {
         if (activated) {
             this.from.clear();
             activated = false;
@@ -62,9 +63,9 @@ public class HiddenNeutron extends Neutron {
         this.from.add(from);
     }
 
-    public void increaseStrength(Neutron to, float strength) {
+    public void increaseStrength(Neuron to, float strength) {
         if (from.size() > 0) {
-            for (Neutron n : from) {
+            for (Neuron n : from) {
                 n.increaseStrength(this, strength);
             }
         }

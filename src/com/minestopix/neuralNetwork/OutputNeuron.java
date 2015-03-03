@@ -6,21 +6,21 @@ import java.util.List;
 /**
  * Created by MinestoPix on 3/3/2015.
  */
-public class OutputNeutron extends Neutron {
+public class OutputNeuron extends Neuron {
 
     public static int idCount = 0;
     private final int id;
-    List<Neutron> from = new ArrayList<Neutron>();
+    List<Neuron> from = new ArrayList<Neuron>();
     float potential = 0;
     float potentialLimit;
     boolean activated = false;
 
-    public OutputNeutron(float potentialLimit) {
+    public OutputNeuron(float potentialLimit) {
         this.potentialLimit = potentialLimit;
         id = idCount++;
     }
 
-    public OutputNeutron() {
+    public OutputNeuron() {
         this(1f);
     }
 
@@ -37,7 +37,7 @@ public class OutputNeutron extends Neutron {
     }
 
     @Override
-    public void increasePotential(Neutron from, float potential) {
+    public void increasePotential(Neuron from, float potential) {
         if (activated) {
             this.from.clear();
             activated = false;
@@ -46,9 +46,9 @@ public class OutputNeutron extends Neutron {
         this.potential += potential;
     }
 
-    public void increaseStrength(Neutron to, float strength) {
+    public void increaseStrength(Neuron to, float strength) {
         if (from.size() > 0) {
-            for (Neutron n : from) {
+            for (Neuron n : from) {
                 n.increaseStrength(this, strength);
             }
         }
