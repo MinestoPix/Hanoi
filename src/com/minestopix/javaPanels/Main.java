@@ -48,7 +48,7 @@ public class Main extends Canvas implements Runnable{
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        hanoi = new Hanoi();
+        hanoi = new Hanoi(4);
 
         MouseListener mouseListener = new MouseListener();
 

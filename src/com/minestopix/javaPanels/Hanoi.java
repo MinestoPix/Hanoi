@@ -1,10 +1,6 @@
 package com.minestopix.javaPanels;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,15 +18,6 @@ public class Hanoi {
     static HanoiStack selectedT = null;
 
     private static boolean animating = false;
-
-    public Hanoi() {
-        stacks = new HanoiStack[3];
-        for (int i = 0; i < 3; i++) {
-            stacks[i] = new HanoiStack(i==0, i * (Main.WIDTH/3) + (Main.WIDTH/6) , i , 9);
-        }
-//        moveQueue(9, stacks[0], stacks[2], stacks[1]);
-
-    }
 
     public Hanoi(int nStacks) {
         stacks = new HanoiStack[nStacks];
